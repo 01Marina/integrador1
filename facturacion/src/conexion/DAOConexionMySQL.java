@@ -15,7 +15,7 @@ public class DAOConexionMySQL{
 	private static final String DB = "facturacion";
 	
 	private static String usuario = "root";
-	private static String contraseña = "admin";
+	private static String contrasena = "admin";
 	
 	private static String  uri = "jdbc:mysql://";
 	private static Connection CONN = null;
@@ -35,10 +35,10 @@ public class DAOConexionMySQL{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			//creo la conexión
+			//creo la conexiï¿½n
 			try {
 				uri += HOST+":"+PUERTO+"/"+DB;
-				CONN = DriverManager.getConnection(uri, usuario, contraseña);
+				CONN = DriverManager.getConnection(uri, usuario, contrasena);
 				CONN.setAutoCommit(false);
 			} catch (SQLException e) {
 				e.printStackTrace();

@@ -39,12 +39,13 @@ public class Servicio {
 		cargarDatosFactura(tablaFactura, "factura.csv");
 		
 		cargarDatosFacturaProducto(tablaFacturaProducto, "factura producto.csv");
-		
+
 		//Resolución de consignas
 		//consigna 3
 		System.out.println(tablaProducto.obtenerProductoQueMasRecaudo());
 		//consigna 4
 		tablaCliente.imprimirListaClientesMasFacturoOrdenado();
+
 	}
 	
 	private static void crearTablas() {
@@ -93,33 +94,16 @@ public class Servicio {
 		
 	}
 
-	
-	private static void cargarDatosFacturaProducto(DAOTablaFactura_Producto tablaFacturaProducto, String string) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	private static void cargarDatosFactura(DAOTablaFactura tablaFactura, String string) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private static void cargarDatosProducto(DAOTablaProducto tablaProducto, String string) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private static void cargarDatosCliente(DAOTablaCliente tablaCliente, String string) {
 		CSVParser parser;
 		try {
 			parser = CSVFormat.DEFAULT.parse(new FileReader(string));
 			
 			for(CSVRecord row: parser) {
-				System.out.println(row.get("idProducto"));
-				System.out.println(row.get("nombre"));
-				System.out.println(row.get("valor"));
+//				System.out.println(row.get("idFactura"));
+//				System.out.println(row.get("idCliente"));
 				
-				tablaCliente.insertar(row.get("idProducto"), row.get("nombre"), row.get("valor"));
+				tablaFactura.insertar(row.get("idFactura"), row.get("idCliente"));
 				
 			}
 			
@@ -129,6 +113,71 @@ public class Servicio {
 			e.printStackTrace();
 		}
 		
+	}
+
+	private static void cargarDatosProducto(DAOTablaProducto tablaProducto, String string) {
+		CSVParser parser;
+		try {
+			parser = CSVFormat.DEFAULT.parse(new FileReader(string));
+			
+			for(CSVRecord row: parser) {
+//				System.out.println(row.get("idProducto"));
+//				System.out.println(row.get("nombre"));
+//				System.out.println(row.get("valor"));
+				
+				tablaProducto.insertar(row.get("idProducto"), row.get("nombre"), row.get("valor"));
+				
+			}
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	private static void cargarDatosCliente(DAOTablaCliente tablaCliente, String string) {
+		CSVParser parser;
+		try {
+			parser = CSVFormat.DEFAULT.parse(new FileReader(string));
+			
+			for(CSVRecord row: parser) {
+//				System.out.println(row.get("idCliente"));
+//				System.out.println(row.get("nombre"));
+//				System.out.println(row.get("email"));
+				
+				tablaCliente.insertar(row.get("idCliente"), row.get("nombre"), row.get("email"));
+				
+			}
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private static void cargarDatosFacturaProducto(DAOTablaFactura_Producto tablaFacturaProducto, String string) {
+	
+		CSVParser parser;
+		try {
+			parser = CSVFormat.DEFAULT.parse(new FileReader(string));
+			
+			for(CSVRecord row: parser) {
+//				System.out.println(row.get("idFactura"));
+//				System.out.println(row.get("idProducto"));
+//				System.out.println(row.get("cantidad"));
+				tablaFacturaProducto.insertar(row.get("idFactura"), row.get("idProducto"), row.get("cantidad"));
+				
+			}
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 
