@@ -47,8 +47,11 @@ public class Servicio {
 
 //		Resolución de consignas
 //		consigna 3
+		System.out.println("Producto que mas recaudó:");
 		tablaProducto.obtenerProductoQueMasRecaudo();
+		
 //		consigna 4
+		System.out.println(System.lineSeparator()+"Lista de clientes con mas facturación:");
 		tablaCliente.imprimirListaClientesMasFacturoOrdenado();
 
 	}
@@ -106,10 +109,7 @@ public class Servicio {
 			for(CSVRecord row: parser) {
 				if(!row.get(0).equals("idFactura")) {
 					tablaFactura.insertar(Integer.parseInt(row.get(0)), Integer.parseInt(row.get(1)));
-					
 				}
-				
-				
 			}
 			
 		} catch (FileNotFoundException e) {
@@ -129,7 +129,6 @@ public class Servicio {
 				if(!row.get(0).equals("idProducto")) {
 					tablaProducto.insertar(Integer.parseInt(row.get(0)),row.get(1), Float.parseFloat( row.get(2)));
 				}
-				
 			}
 			
 		} catch (FileNotFoundException e) {

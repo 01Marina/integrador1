@@ -86,7 +86,7 @@ public class DAOTablaProducto  {
 	
 	
 	public void obtenerProductoQueMasRecaudo() {
-		String consulta = "SELECT p.idProducto, SUM(f.cantidad)*p.valor as recaudacion"
+		String consulta = "SELECT p.idProducto, SUM(f.cantidad)*p.valor as recaudacion "
 				+ "FROM Producto p JOIN Factura_Producto f on p.idProducto = f.idProducto "
 				+ "GROUP BY idProducto ORDER BY recaudacion DESC LIMIT 1";
 		conexion.abrirConexion();
@@ -96,7 +96,8 @@ public class DAOTablaProducto  {
 			ps = conn.prepareStatement(consulta);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				System.out.println("id: "+rs.getInt(1)+", Nombre: "+ rs.getString(2)+", Valor: "+ rs.getFloat(3));
+				System.out.println("idProducto: "+rs.getInt(1)+", recaudación: "+ rs.getString(2));
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

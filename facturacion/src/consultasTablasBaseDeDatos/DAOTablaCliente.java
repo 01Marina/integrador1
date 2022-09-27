@@ -90,8 +90,8 @@ public class DAOTablaCliente {
 	public void imprimirListaClientesMasFacturoOrdenado() {
 		
 		String consulta = "SELECT c.*, SUM(fp.cantidad)*p.valor as facturacion "
-				+ "FROM Cliente c, Factura f, Factura_Producto fp, Producto p"
-				+ "WHERE c.idCliente = f.idCliente AND f.idFactura=fp.idFactura AND fp.idProducto = p.idProducto"
+				+ "FROM Cliente c, Factura f, Factura_Producto fp, Producto p "
+				+ "WHERE c.idCliente = f.idCliente AND f.idFactura=fp.idFactura AND fp.idProducto = p.idProducto "
 				+ "GROUP BY idCliente ORDER BY facturacion DESC";
 		
 		conexion.abrirConexion();
@@ -103,7 +103,7 @@ public class DAOTablaCliente {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				System.out.println("Id: "+rs.getInt(1)+", Nombre: "+ rs.getString(2)+", Email: "+ rs.getString(3));
+				System.out.println("IdCliente: "+rs.getInt(1)+", Nombre: "+ rs.getString(2)+", Email: "+ rs.getString(3)+", Facturación: "+ rs.getInt(4));
 			}
 			
 		} catch (SQLException e) {
