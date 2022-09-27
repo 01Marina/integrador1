@@ -10,7 +10,7 @@ import java.util.List;
 import conexion.DAOConexionMySQL;
 
 public class DAOTablaFactura_Producto {
-	final String INSERT = "INSERT INTO Factura_Producto (idFactura,idProducto, cantidad) VALUES(?,?,?)";
+	final String INSERT = "INSERT INTO Factura_Producto (idFactura, idProducto, cantidad) VALUES(?,?,?)";
 	//final String UPDATE = "UPDATE Factura_Producto SET nombre=?, valor=? WHERE idProducto=?";
 	final String DELETE = "DELETE FROM Factura_Producto WHERE idFactura=?";
 	final String SELECTALL = "SELECT fp FROM Factura_Producto fp LEFT JOIN idFactura = idProducto";
@@ -66,14 +66,17 @@ public class DAOTablaFactura_Producto {
 	
 
 
-	public void insertar(String idFactura, String idProducto, String cantidad) {
+	public void insertar(int idFactura, int idProducto, int cantidad) {
+		conexion.abrirConexion();
 		Connection conn = conexion.getConn();
 		PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement(INSERT); 
-			ps.setString(1, idFactura); 
-			ps.setString(2, idProducto);
-			ps.setString(3, cantidad);
+			ps.setInt(1, idFactura); 
+			ps.setInt(2, idProducto);
+			ps.setInt(3, cantidad);
+			ps.executeUpdate();
+			ps.close();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

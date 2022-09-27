@@ -65,13 +65,16 @@ public class DAOTablaFactura {
 	
 
 
-	public void insertar(String idFactura, String idCliente) {
+	public void insertar(int idFactura, int idCliente) {
+		conexion.abrirConexion();
 		Connection conn = conexion.getConn();
 		PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement(INSERT); 
-			ps.setString(1, idFactura); 
-			ps.setString(2, idCliente);
+			ps.setInt(1, idFactura); 
+			ps.setInt(2, idCliente);
+			ps.executeUpdate();
+			ps.close();
 	
 			
 		} catch (SQLException e) {

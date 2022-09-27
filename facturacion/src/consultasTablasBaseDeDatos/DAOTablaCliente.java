@@ -13,14 +13,14 @@ import conexion.DAOConexionMySQL;
 
 
 public class DAOTablaCliente {
-	final String INSERT = "INSERT INTO Cliente (idCliente,nombre, email) VALUES(?,?,?)";
+	final String INSERT = "INSERT INTO Cliente (idCliente, nombre, email) VALUES(?,?,?)";
 	final String UPDATE = "UPDATE Cliente SET nombre=?, email=? WHERE idCliente=?";
 	final String DELETE = "DELETE FROM Cliente WHERE idCliente=?";
 	final String SELECTALL = "SELECT c FROM Cliente c";
 //	String sql = "SELECT c.nombre FROM cliente c";
 	final String SELECTID = "SELECT c FROM Cliente WHERE idCliente=?";
 	
-	private static final DAOConexionMySQL conexion = DAOConexionMySQL.crearConexion();
+	private static  DAOConexionMySQL conexion = DAOConexionMySQL.crearConexion();
 	
 	public DAOTablaCliente() {}
 
@@ -68,14 +68,17 @@ public class DAOTablaCliente {
 	
 
 
-	public void insertar(String idCliente, String nombre, String email) {
+	public void insertar(int idCliente, String nombre, String email) {
+		conexion.abrirConexion();
 		Connection conn = conexion.getConn();
 		PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement(INSERT); 
-			ps.setString(1, idCliente); 
+			ps.setInt(1, idCliente); 
 			ps.setString(2, nombre);
 			ps.setString(3, email);
+			ps.executeUpdate();
+			ps.close();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -85,11 +88,13 @@ public class DAOTablaCliente {
 	}
 	
 	public void imprimirListaClientesMasFacturoOrdenado() {
+		
 		String consulta = "SELECT c.*, SUM(fp.cantidad)*p.valor as facturacion "
 				+ "FROM Cliente c, Factura f, Factura_Producto fp, Producto p"
 				+ "WHERE c.idCliente = f.idCliente AND f.idFactura=fp.idFactura AND fp.idProducto = p.idProducto"
 				+ "GROUP BY idCliente ORDER BY facturacion DESC";
 		
+		conexion.abrirConexion();
 		Connection conn = conexion.getConn();
 		PreparedStatement ps;
 		try {

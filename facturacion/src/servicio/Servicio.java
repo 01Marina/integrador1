@@ -22,7 +22,7 @@ public class Servicio {
 
 	public static void main(String[] args) {
 		
-		crearTablas();
+//		crearTablas();
 		
 		DAOTablaCliente tablaCliente = new DAOTablaCliente();
 		DAOTablaProducto tablaProducto = new DAOTablaProducto();
@@ -30,26 +30,30 @@ public class Servicio {
 		DAOTablaFactura_Producto tablaFacturaProducto = new DAOTablaFactura_Producto();
 		
 		
-//		leemos los datos que nos dan desde la cátedra
+//		leemos los datos que nos dan desde la cátedra	
 		
-		cargarDatosCliente(tablaCliente, "cliente.csv");
-		
-		cargarDatosProducto(tablaProducto, "producto.csv");
-		
-		cargarDatosFactura(tablaFactura, "factura.csv");
-		
-		cargarDatosFacturaProducto(tablaFacturaProducto, "factura producto.csv");
+		String urlCliente = "src/csv/clientes.csv";
+		String urlProducto = "src/csv/productos.csv";
+		String urlFactura = "src/csv/facturas.csv";
+		String urlFacturaProducto = "src/csv/facturasProductos.csv";
+//				
+//		cargarDatosCliente(tablaCliente, urlCliente);
+//		
+//		cargarDatosProducto(tablaProducto, urlProducto);
+//		
+//		cargarDatosFactura(tablaFactura, urlFactura);
+//		
+//		cargarDatosFacturaProducto(tablaFacturaProducto, urlFacturaProducto);
 
-		//Resolución de consignas
-		//consigna 3
-		System.out.println(tablaProducto.obtenerProductoQueMasRecaudo());
-		//consigna 4
+//		Resolución de consignas
+//		consigna 3
+		tablaProducto.obtenerProductoQueMasRecaudo();
+//		consigna 4
 		tablaCliente.imprimirListaClientesMasFacturoOrdenado();
 
 	}
 	
 	private static void crearTablas() {
-		conexion.cerrarConexion();
 		Connection conn = conexion.getConn();
 
 		
@@ -66,6 +70,12 @@ public class Servicio {
 								+ "valor FLOAT,"
 								+ "PRIMARY KEY(idProducto))";
 		
+		String tablaFactura = "CREATE TABLE Factura("
+				+ "idFactura INT, " 
+				+ "idCliente int," 
+				+ "PRIMARY KEY(idFactura),"
+				+ "FOREIGN KEY(idCliente) references Cliente(idCliente))";
+		
 		String tablaFacturaProducto = "CREATE TABLE Factura_Producto("
 										+ "idFactura INT, " 
 										+ "idProducto int," 
@@ -74,18 +84,12 @@ public class Servicio {
 										+ "FOREIGN KEY(idFactura) references Factura(idFactura),"
 										+ "FOREIGN KEY(idProducto) references Producto(idProducto))";
 		
-		String tablaFactura = "CREATE TABLE Factura("
-								+ "idFactura INT, " 
-								+ "idCliente int," 
-								+ "PRIMARY KEY(idFactura),"
-								+ "FOREIGN KEY(idCliente) references Cliente(idCliente))";
-		
 		
 		try {
 			conn.prepareStatement(tablaCliente).execute();
 			conn.prepareStatement(tablaProducto).execute();
-			conn.prepareStatement(tablaFacturaProducto).execute();
 			conn.prepareStatement(tablaFactura).execute();
+			conn.prepareStatement(tablaFacturaProducto).execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -100,10 +104,11 @@ public class Servicio {
 			parser = CSVFormat.DEFAULT.parse(new FileReader(string));
 			
 			for(CSVRecord row: parser) {
-//				System.out.println(row.get("idFactura"));
-//				System.out.println(row.get("idCliente"));
+				if(!row.get(0).equals("idFactura")) {
+					tablaFactura.insertar(Integer.parseInt(row.get(0)), Integer.parseInt(row.get(1)));
+					
+				}
 				
-				tablaFactura.insertar(row.get("idFactura"), row.get("idCliente"));
 				
 			}
 			
@@ -121,11 +126,9 @@ public class Servicio {
 			parser = CSVFormat.DEFAULT.parse(new FileReader(string));
 			
 			for(CSVRecord row: parser) {
-//				System.out.println(row.get("idProducto"));
-//				System.out.println(row.get("nombre"));
-//				System.out.println(row.get("valor"));
-				
-				tablaProducto.insertar(row.get("idProducto"), row.get("nombre"), row.get("valor"));
+				if(!row.get(0).equals("idProducto")) {
+					tablaProducto.insertar(Integer.parseInt(row.get(0)),row.get(1), Float.parseFloat( row.get(2)));
+				}
 				
 			}
 			
@@ -143,12 +146,9 @@ public class Servicio {
 			parser = CSVFormat.DEFAULT.parse(new FileReader(string));
 			
 			for(CSVRecord row: parser) {
-//				System.out.println(row.get("idCliente"));
-//				System.out.println(row.get("nombre"));
-//				System.out.println(row.get("email"));
-				
-				tablaCliente.insertar(row.get("idCliente"), row.get("nombre"), row.get("email"));
-				
+				if(!row.get(0).equals("idCliente")) {
+					tablaCliente.insertar(Integer.parseInt(row.get(0)) , row.get(1), row.get(2));
+				}
 			}
 			
 		} catch (FileNotFoundException e) {
@@ -166,11 +166,9 @@ public class Servicio {
 			parser = CSVFormat.DEFAULT.parse(new FileReader(string));
 			
 			for(CSVRecord row: parser) {
-//				System.out.println(row.get("idFactura"));
-//				System.out.println(row.get("idProducto"));
-//				System.out.println(row.get("cantidad"));
-				tablaFacturaProducto.insertar(row.get("idFactura"), row.get("idProducto"), row.get("cantidad"));
-				
+				if(!row.get(0).equals("idFactura")) {
+					tablaFacturaProducto.insertar(Integer.parseInt(row.get(0)), Integer.parseInt(row.get(1)), Integer.parseInt(row.get(2)));
+				}
 			}
 			
 		} catch (FileNotFoundException e) {

@@ -65,14 +65,17 @@ public class DAOTablaProducto  {
 	
 
 
-	public void insertar(String idProducto, String nombre, String valor) {
+	public void insertar(int idProducto, String nombre, Float valor) {
+		conexion.abrirConexion();
 		Connection conn = conexion.getConn();
 		PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement(INSERT); 
-			ps.setString(1, idProducto); 
+			ps.setInt(1, idProducto); 
 			ps.setString(2, nombre);
-			ps.setString(3, valor);
+			ps.setFloat(3, valor);
+			ps.executeUpdate();
+			ps.close();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -83,11 +86,11 @@ public class DAOTablaProducto  {
 
 	
 	
-	public Producto obtenerProductoQueMasRecaudo() {
+	public void obtenerProductoQueMasRecaudo() {
 		String consulta = "SELECT p.idProducto, SUM(f.cantidad)*p.valor as recaudacion"
 				+ "FROM Producto p JOIN Factura_Producto f on p.idProducto = f.idProducto "
 				+ "GROUP BY idProducto ORDER BY recaudacion DESC LIMIT 1";
-		
+		conexion.abrirConexion();
 		Connection conn = conexion.getConn();
 		PreparedStatement ps;
 		try {
@@ -100,6 +103,6 @@ public class DAOTablaProducto  {
 			e.printStackTrace();
 		}
 		conexion.cerrarConexion();
-		return null;
 	}
+
 }

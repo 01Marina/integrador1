@@ -19,7 +19,7 @@ public class DAOConexionMySQL{
 	
 	private static String  uri = "jdbc:mysql://";
 	private static Connection CONN = null;
-	private static String driver = "\"com.mysql.cj.jdbc.Driver\"";
+	private static String driver = "com.mysql.cj.jdbc.Driver";
 	
 	private DAOConexionMySQL() {
 		this.instanciarConexion();
@@ -37,8 +37,9 @@ public class DAOConexionMySQL{
 			}
 			//creo la conexi�n
 			try {
-				uri += HOST+":"+PUERTO+"/"+DB;
-				CONN = DriverManager.getConnection(uri, usuario, contrasena);
+				uri = uri + HOST+":"+PUERTO+"/"+ DB;
+				String uri2 = "jdbc:mysql://localhost:3306/facturacion";
+				CONN = DriverManager.getConnection(uri2, usuario, contrasena);
 				CONN.setAutoCommit(false);
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -65,6 +66,10 @@ public class DAOConexionMySQL{
 
 	public Connection getConn() {
 		return CONN;
+	}
+
+	public void abrirConexion() {
+		this.crearConexion();
 	}
 
 	
