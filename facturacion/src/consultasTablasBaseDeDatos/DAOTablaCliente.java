@@ -55,6 +55,29 @@ public class DAOTablaCliente {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void imprimirListaClientesMasFacturoOrdenado() {
+		String consulta = "SELECT c.*, SUM(fp.cantidad)*p.valor as facturacion "
+				+ "FROM Cliente c, Factura f, Factura_Producto fp, Producto p"
+				+ "WHERE c.idCliente = f.idCliente AND f.idFactura=fp.idFactura AND fp.idProducto = p.idProducto"
+				+ "GROUP BY idCliente ORDER BY facturacion DESC";
+		
+		Connection conn = conexion.getConn();
+		PreparedStatement ps;
+		try {
+			ps = conn.prepareStatement(consulta);
+			
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				System.out.println("Id: "+rs.getInt(1)+", Nombre: "+ rs.getString(2)+", Email: "+ rs.getString(3));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		conexion.cerrarConexion();
+	}
 
 
 }

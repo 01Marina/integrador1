@@ -30,7 +30,7 @@ public class Servicio {
 		DAOTablaFactura_Producto tablaFacturaProducto = new DAOTablaFactura_Producto();
 		
 		
-//		leemos los datos que nos dan desde la catedra
+//		leemos los datos que nos dan desde la cátedra
 		
 		cargarDatosCliente(tablaCliente, "cliente.csv");
 		
@@ -39,29 +39,63 @@ public class Servicio {
 		cargarDatosFactura(tablaFactura, "factura.csv");
 		
 		cargarDatosFacturaProducto(tablaFacturaProducto, "factura producto.csv");
-	}
-
-	private static void cargarDatosFacturaProducto(DAOTablaFactura_Producto tablaFacturaProducto, String string) {
-		// TODO Auto-generated method stub
 		
+		//Resolución de consignas
+		//consigna 3
+		System.out.println(tablaProducto.obtenerProductoQueMasRecaudo());
+		//consigna 4
+		tablaCliente.imprimirListaClientesMasFacturoOrdenado();
 	}
-
+	
 	private static void crearTablas() {
 		conexion.cerrarConexion();
 		Connection conn = conexion.getConn();
 
-		String tablaCliente = "CREATE TABLE cliente(" + "id INT, " + "nombre VARCHAR(500)," + "edad INT,"
-				+ "PRIMARY KEY(id))";
 		
-		String tablaFacturaProducto = "";
+		String tablaCliente = "CREATE TABLE Cliente("
+								+ "idCliente INT,"
+								+ "nombre VARCHAR(500),"
+								+ "email VARCHAR(150),"
+								+ "PRIMARY KEY(idCliente))";
+
+		
+		String tablaProducto = "CREATE TABLE Producto("
+								+ "idProducto INT, " 
+								+ "nombre VARCHAR(45)," 
+								+ "valor FLOAT,"
+								+ "PRIMARY KEY(idProducto))";
+		
+		String tablaFacturaProducto = "CREATE TABLE Factura_Producto("
+										+ "idFactura INT, " 
+										+ "idProducto int," 
+										+ "cantidad int," 
+										+ "PRIMARY KEY(idFactura, idProducto),"
+										+ "FOREIGN KEY(idFactura) references Factura(idFactura),"
+										+ "FOREIGN KEY(idProducto) references Producto(idProducto))";
+		
+		String tablaFactura = "CREATE TABLE Factura("
+								+ "idFactura INT, " 
+								+ "idCliente int," 
+								+ "PRIMARY KEY(idFactura),"
+								+ "FOREIGN KEY(idCliente) references Cliente(idCliente))";
+		
 		
 		try {
 			conn.prepareStatement(tablaCliente).execute();
+			conn.prepareStatement(tablaProducto).execute();
+			conn.prepareStatement(tablaFacturaProducto).execute();
+			conn.prepareStatement(tablaFactura).execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
 		conexion.cerrarConexion();
+		
+	}
+
+	
+	private static void cargarDatosFacturaProducto(DAOTablaFactura_Producto tablaFacturaProducto, String string) {
+		// TODO Auto-generated method stub
 		
 	}
 
