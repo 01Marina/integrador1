@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import conexion.DAOConexionMySQL;
-import entidades.Producto;
 
 
 public class DAOTablaProducto  {
