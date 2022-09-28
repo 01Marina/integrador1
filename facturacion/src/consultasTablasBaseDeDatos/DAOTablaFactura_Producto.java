@@ -85,4 +85,26 @@ public class DAOTablaFactura_Producto {
 		conexion.cerrarConexion();
 	}
 
+
+	public void crearTabla() {
+		conexion.abrirConexion();
+		Connection conn = conexion.getConn();
+		
+		String tablaFacturaProducto = "CREATE TABLE Factura_Producto("
+										+ "idFactura INT, " 
+										+ "idProducto int," 
+										+ "cantidad int," 
+										+ "PRIMARY KEY(idFactura, idProducto),"
+										+ "FOREIGN KEY(idFactura) references Factura(idFactura),"
+										+ "FOREIGN KEY(idProducto) references Producto(idProducto))";
+		try {
+			conn.prepareStatement(tablaFacturaProducto).execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		conexion.cerrarConexion();
+		
+	}
+
 }

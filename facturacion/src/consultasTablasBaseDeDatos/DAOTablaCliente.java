@@ -113,4 +113,25 @@ public class DAOTablaCliente {
 	}
 
 
+	public void crearTabla() {
+		conexion.abrirConexion();
+		Connection conn = conexion.getConn();
+
+		String tablaCliente = "CREATE TABLE Cliente("
+								+ "idCliente INT,"
+								+ "nombre VARCHAR(500),"
+								+ "email VARCHAR(150),"
+								+ "PRIMARY KEY(idCliente))";
+		
+		try {
+			conn.prepareStatement(tablaCliente).execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		conexion.cerrarConexion();
+		
+	}
+
+
 }

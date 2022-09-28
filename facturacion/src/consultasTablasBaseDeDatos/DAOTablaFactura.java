@@ -83,4 +83,24 @@ public class DAOTablaFactura {
 		
 		conexion.cerrarConexion();
 	}
+
+
+	public void crearTabla() {
+		conexion.abrirConexion();
+		Connection conn = conexion.getConn();
+
+		String tablaFactura = "CREATE TABLE Factura("
+				+ "idFactura INT, " 
+				+ "idCliente int," 
+				+ "PRIMARY KEY(idFactura),"
+				+ "FOREIGN KEY(idCliente) references Cliente(idCliente))";
+		try {
+			conn.prepareStatement(tablaFactura).execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		conexion.cerrarConexion();
+		
+	}
 }

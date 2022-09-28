@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 
 public class DAOConexionMySQL{
@@ -37,9 +38,10 @@ public class DAOConexionMySQL{
 			}
 			//creo la conexi�n
 			try {
+				uri = "jdbc:mysql://";
 				uri = uri + HOST+":"+PUERTO+"/"+ DB;
 				String uri2 = "jdbc:mysql://localhost:3306/facturacion";
-				CONN = DriverManager.getConnection(uri2, usuario, contrasena);
+				CONN = DriverManager.getConnection(uri, usuario, contrasena);
 				CONN.setAutoCommit(false);
 			} catch (SQLException e) {
 				e.printStackTrace();
